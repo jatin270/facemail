@@ -1,0 +1,73 @@
+<% include ./partials/header %>
+
+<div class="container">
+
+<h1>
+    Profile Page
+</h1>
+
+<img src="<%=userdetail.profileurl%>" alt="">
+
+    <h2>
+    <%= userdetail.username %>
+</h2>
+
+<h2>
+    <%= userdetail.email %>
+</h2>
+    <h3>
+        Followers :
+        <form action="/users/followerslist" method="post">
+            <input type="hidden" name="useremail" value="<%= userdetail.email %>">
+            <input type="submit" value="<%= followers %>">
+        </form>
+    </h3>
+    <h4>
+        Following :
+        <form action="/users/followinglist" method="post">
+            <input type="hidden" name="useremail" value="<%= userdetail.email %>">
+            <input type="submit" value="<%=following%>">
+        </form>
+
+    </h4>
+<% if (currentUser){%>
+    <% if(!flag) {%>
+<form action="/users/follow" method="post">
+    <input type="hidden" name="email" value="<%=userdetail.email%>">
+    <input type="submit" value="FOLLOW">
+</form>
+    <% }else{%>
+    <form action="/users/unfollow" method="post">
+        <input type="hidden" name="email" value="<%=userdetail.email%>">
+        <input type="submit" value="UNFOLLOW">
+    <%}%>
+    </form>
+    <%}%>
+    <form action="/users/chat">
+        <input type="hidden" name="from" value="<%=from%>">
+        <input type="hidden" name="to" value="<%=userdetail.email%>">
+        <input type="submit" value="Message">
+    </form>
+
+</div>
+
+
+<!--<div id="myModal" class="modal shrink">-->
+
+    <!--&lt;!&ndash; Modal content &ndash;&gt;-->
+    <!--<div class="modal-content" >-->
+        <!--<div class="modal-header">-->
+            <!--<span id="span" class="close">&times;</span>-->
+            <!--<h2>Modal Header</h2>-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="modal-footer">&ndash;&gt;-->
+            <!--&lt;!&ndash;<h3>Modal Footer</h3>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<script src="/js/messageWindow.js"></script>-->
+
+<% include ./partials/footer %>
