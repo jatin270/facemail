@@ -1,73 +1,91 @@
 <% include ./partials/header %>
-
+<link rel="stylesheet" href="/stylesheets/pages/profilepage.css">
 <div class="container">
+<div class="row">
+<div class="col-lg-8">
+<div class="col-lg-12 col-sm-12">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzIwkNbGjUbzewkWiruZJ-685XdqHxrK2IXZIVGVt-709st9ip">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" src="<%=userdetail.profileurl%>">
+        </div>
+        <div class="card-info"> <span class="card-title"><%=userdetail.username%></span>
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" onclick="openCity(event, 'profileinfo')" id="defaultOpen" class="btn btn-primary" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <div class="hidden-xs">Personal Info</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" onclick="openCity(event, 'followers')" id="fav" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Followers:<%=followers%></div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" onclick="openCity(event, 'follow')" id="following" class="btn btn-default" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Following:<%=following%></div>
+            </button>
+        </div>
+    </div>
 
-<h1>
-    Profile Page
-</h1>
 
-<img src="<%=userdetail.profileurl%>" alt="">
 
-    <h2>
-    <%= userdetail.username %>
-</h2>
+<div class="well tab-content">
+    <div id="profileinfo" class="tabcontent">
+        <p>Username : <%= userdetail.username %></p>
+        <p>EmailId :  <%= userdetail.email %></p>
+    </div>
 
-<h2>
-    <%= userdetail.email %>
-</h2>
-    <h3>
-        Followers :
-        <form action="/users/followerslist" method="post">
-            <input type="hidden" name="useremail" value="<%= userdetail.email %>">
-            <input type="submit" value="<%= followers %>">
-        </form>
-    </h3>
-    <h4>
-        Following :
-        <form action="/users/followinglist" method="post">
-            <input type="hidden" name="useremail" value="<%= userdetail.email %>">
-            <input type="submit" value="<%=following%>">
-        </form>
+    <div id="followers" class="tabcontent">
+        <%followerslist.forEach(function (t) {%>
+        <li><a href="/users/<%=t%>"><%=t%></a></li>
+        <%})%>
+    </div>
+    <div id="follow" class="tabcontent">
+        <%followinglist.forEach(function (t) {%>
+        <li><a href="/users/<%=t%>"><%=t%></a></li>
+        <%})%>
+    </div>
+</div>
+</div>
+</div>
+    <div class="col-lg-4 center-block" >
 
-    </h4>
-<% if (currentUser){%>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <% if (currentUser){%>
     <% if(!flag) {%>
-<form action="/users/follow" method="post">
-    <input type="hidden" name="email" value="<%=userdetail.email%>">
-    <input type="submit" value="FOLLOW">
-</form>
+    <form id="followrequest">
+        <input type="hidden" id="emailfollow" name="email" value="<%=userdetail.email%>">
+        <input type="submit" value="FOLLOW" class="btn btn-success">
+    </form>
     <% }else{%>
-    <form action="/users/unfollow" method="post">
-        <input type="hidden" name="email" value="<%=userdetail.email%>">
+    <form id="unfollowrequest">
+        <input type="hidden"id="emailunfollow" name="email" value="<%=userdetail.email%>">
         <input type="submit" value="UNFOLLOW">
-    <%}%>
+        <%}%>
     </form>
     <%}%>
+    <br>
+
     <form action="/users/chat">
         <input type="hidden" name="from" value="<%=from%>">
         <input type="hidden" name="to" value="<%=userdetail.email%>">
-        <input type="submit" value="Message">
+        <input type="submit" value="Message" class="btn btn-primary btn-md">
     </form>
-
+</div>
+</div>
 </div>
 
-
-<!--<div id="myModal" class="modal shrink">-->
-
-    <!--&lt;!&ndash; Modal content &ndash;&gt;-->
-    <!--<div class="modal-content" >-->
-        <!--<div class="modal-header">-->
-            <!--<span id="span" class="close">&times;</span>-->
-            <!--<h2>Modal Header</h2>-->
-        <!--</div>-->
-        <!--<div class="modal-body">-->
-        <!--</div>-->
-        <!--&lt;!&ndash;<div class="modal-footer">&ndash;&gt;-->
-            <!--&lt;!&ndash;<h3>Modal Footer</h3>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</div>-->
-<!--</div>-->
-
-<!--<script src="/js/messageWindow.js"></script>-->
+<script src="/js/profilepage.js"></script>
 
 <% include ./partials/footer %>

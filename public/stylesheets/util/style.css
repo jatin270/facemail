@@ -1,0 +1,29 @@
+body{
+  padding: 60px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.imageContainer {
+  width:200px;
+  height:200px;
+  background-image: url(https://images7.alphacoders.com/857/thumb-1920-857340.png);
+}
+
+.center-block {
+
+  display: table;
+  margin: auto;
+}
+#searchbox {
+  background: border-box;
+  background-color: white;
+  backface-visibility:hidden;
+  position: absolute;
+  left: 0px;
+  top: 40px;
+  z-index: 1;
+}
+

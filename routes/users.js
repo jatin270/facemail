@@ -4,13 +4,24 @@ var router = express.Router();
 var neo4j=require('neo4j-driver').v1;
 var driver=neo4j.driver('bolt://localhost',neo4j.auth.basic('neo4j','aezakmisa'));
 var session=driver.session();
+var Cookies=require('cookies'),
+    uuid=require('uuid'),
+    njwt=require('njwt');
 
+var secretKey;
 
 //=============================================Following functinality and Display User===============================================================
 
 router.get('/chat',function (req,res) {
-    res.render('chat');
-
+    const token=new Cookies(req,res).get('access_token');
+    secretKey=res.app.get('secretKey');
+    njwt.verify(token,secretKey,function (err,result) {
+        if(err){
+            res.send("Error accessing");
+        }else{
+            res.render('chat');
+        }
+    });
 });
 
 router.get('/:email', function(req, res, next) {
@@ -40,12 +51,17 @@ router.get('/:email', function(req, res, next) {
                 console.log(err);
             });
     }
+    var followersList=[];
+    var followingList=[];
     if(email) {
         session
             .run('MATCH (a:User {email:{emailParam1}})<-[r:follow]-(b:User) RETURN b', {emailParam1: email})
             .then(function (result) {
                 if (result.records) {
                     followers = result.records.length;
+                    for(i=0;i<followers;i++){
+                        followersList.push(result.records[i]._fields[0].properties.email);
+                    }
                 } else {
                     followers = 0;
                 }
@@ -59,6 +75,9 @@ router.get('/:email', function(req, res, next) {
             .then(function (result) {
                 if (result.records) {
                     following = result.records.length;
+                    for(i=0;i<following;i++){
+                        followingList.push(result.records[i]._fields[0].properties.email);
+                    }
                 } else {
                     following = 0;
                 }
@@ -77,7 +96,9 @@ router.get('/:email', function(req, res, next) {
                     res.render('profilepage', {
                         userdetail: details,
                         followers: followers,
+                        followerslist:followersList,
                         following: following,
+                        followinglist:followingList,
                         from:email1,
                         flag: flag
                     });
@@ -101,13 +122,12 @@ router.post('/follow',function (req,res) {
             "RETURN a,b",{user1Param:user1,user2Param:user2})
         .then(function (result) {
             console.log(result);
-            res.redirect('/home');
+            res.send("Followed")
         })
         .catch(function (err) {
            console.log(err);
         });
 });
-
 
 router.post('/unfollow',function (req,res) {
     var user1=req.session.email;
@@ -116,61 +136,13 @@ router.post('/unfollow',function (req,res) {
         .run("MATCH (:User {email:{user1Param}})-[r:follow]->(:User {email:{user2Param}}) \n" + "DELETE r",{user1Param:user1,user2Param:user2})
         .then(function (result) {
             console.log(result);
-            res.redirect('/home');
+            res.send("Unfollowed");
         })
         .catch(function (err) {
             console.log(err);
         });
 
 });
-
-
-router.post('/followerslist',function (req,res) {
-
-    var email=req.body.useremail;
-    var userList=[];
-    session
-        .run('MATCH (a:User {email:{emailParam1}})<-[r:follow]-(b:User) RETURN b', {emailParam1: email})
-        .then(function (result) {
-            if (result.records) {
-                followers = result.records.length;
-                for(i=0;i<followers;i++){
-                    userList.push(result.records[i]._fields[0].properties.email);
-                }
-            } else {
-                followers = 0;
-            }
-            res.render('listpage',{users:userList});
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
-
-});
-
-
-router.post('/followinglist',function (req,res) {
-    var email=req.body.useremail;
-    var userList=[];
-    session
-        .run('MATCH (a:User {email:{emailParam1}})-[r:follow]->(b:User) RETURN b', {emailParam1: email})
-        .then(function (result) {
-            if (result.records) {
-                followers = result.records.length;
-                for(i=0;i<followers;i++){
-                    userList.push(result.records[i]._fields[0].properties.email);
-                }
-            } else {
-                followers = 0;
-            }
-            res.render('listpage',{users:userList});
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
-});
-
-
 
 //===============================================================================================================================
 router.post('/search',function (req,res) {
@@ -178,6 +150,7 @@ router.post('/search',function (req,res) {
     console.log(req.body.useremail);
     res.redirect('/users/'+req.body.useremail);
 });
+
 //==================================================================================================================================
 
 module.exports = router;

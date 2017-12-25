@@ -1,6 +1,4 @@
 // =================================================Decalaration========================================================================================================
-
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -11,8 +9,12 @@ var neo4j=require('neo4j-driver').v1;
 var index = require('./routes/index');
 var users = require('./routes/users');
 var newsfeed=require('./routes/posts');
+var drive=require('./routes/drive');
+var uuid=require('uuid');
 
-const moment=require('moment')
+const secretKey=uuid.v4();
+
+const moment=require('moment');
 const { Pool, Client } = require('pg');
 const socketIO=require('socket.io');
 const http=require('http');
@@ -47,12 +49,12 @@ const client = new Client({
     password: 'aezakmisa',
     port: 5433,
 });
+
 client.connect();
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set("view engine","ejs");
+app.set('secretKey',secretKey);
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -65,17 +67,16 @@ app.use(expressSession({
     saveUninitialized: true
 }));
 
-
+var currentUser;
 app.use(function (req,res,next) {
     res.locals.currentUser=req.session.email;
-    // res.locals.error=req.flash("error");
-    // res.locals.success=req.flash("success");
     next();
 });
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/newsfeed',newsfeed);
+app.use('/drive',drive);
 
 var states=[];
 
@@ -146,6 +147,10 @@ io.on('connection',function (socket) {
         }
     });
     socket.on('disconnect',function () {
+
+        var email=currentUser;
+        var time=moment().format();
+
         var user=usersonline.removeUser(socket.id);
         if(user){
             io.to(user.room).emit('updateUserList',usersonline.getUserList(user.room));
@@ -153,38 +158,37 @@ io.on('connection',function (socket) {
         }
     });
 });
+
+
 //=================================================Routes=============================================================================================
 
 app.get('/sendata',function (req,res) {
-
     res.send({user:states})
 });
 
 
+//==================================================================================================================================
+
+var Pythonshell=require('python-shell')
+var options = {
+    mode: 'text',
+    pythonOptions: ['-u'],
+    args: ['value1', 'value2', 'value3']
+};
+
+Pythonshell.run('my_script.py', options, function (err, results) {
+    if (err) throw err;
+    // results is an array consisting of messages collected during execution
+    console.log('results: %j', results);
+});
+
 //===========================================Server================================================================
+
 server.listen(port,function (err) {
    console.log("Server is running");
 });
 
 module.exports = app;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // ========================================================================================================================================================

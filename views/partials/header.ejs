@@ -2,14 +2,14 @@
 <html>
 <head>
     <title>FaceMail</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/stylesheets/autocomplete.css">
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/util/autocomplete.css">
+    <link rel="stylesheet" href="/stylesheets/util/style.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="/js/autocomplete.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+
     <script>
-        // Initialize Firebase
         var config = {
             apiKey: "AIzaSyBwc20ByCOhg5_RSnsRJhqunTqVX5iwEic",
             authDomain: "facemail-8813d.firebaseapp.com",
@@ -20,10 +20,15 @@
         };
         firebase.initializeApp(config);
     </script>
+
 </head>
 <body>
+<div class="container-fluid">
+<div class="row">
+</div>
+</div>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid container">
         <div class="navbar=header">
             <a class="navbar-brand" href="/">FaceMail</a>
@@ -31,8 +36,8 @@
         <ul class="nav navbar-nav">
             <li class="active"><a href="/newsfeed">Newsfeed</a></li>
             <li><a href="#">Mail</a></li>
-            <li><a href="#">Drive</a></li>
-            <li><a href="#">Many more</a></li>
+            <li><a href="/drive">Drive</a></li>
+            <li><a href="#">Notification</a></li>
         </ul>
 
         <div class="collapse navbar-collapse">
@@ -42,7 +47,7 @@
                         <div class="autocomplete">
                             <input name="useremail" type="text" placeholder="Enter User" autocomplete="off">
                             <span class="close">Cancel</span>
-                            <div class="dialog">
+                            <div class="dialog" id="searchbox">
                             </div>
                         </div>
                     </form>
@@ -58,5 +63,7 @@
         </div>
     </div>
 </nav>
+
+
 
 

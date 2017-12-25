@@ -1,3 +1,103 @@
 <% include ./partials/header %>
-<h1>New Feed Coming soon</h1>
+<link rel="stylesheet" href="/stylesheets/posts/postitem.css">
+<link rel="stylesheet" href="/stylesheets/util/player.css">
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <button class="btn btn-primary" onclick="window.location.href='/newsfeed/create'">Create</button>
+        </div>
+        <div class="col-lg-9">
+            <ul class="list-unstyled">
+                <% postdata.forEach(function (postitem) {%>
+                <input type="hidden" id="postid" value="<%=postitem.postid%>">
+                <div class="post">
+                    <div class="[ panel panel-default ] panel-google-plus">
+                        <div class="dropdown">
+                    <span class="dropdown-toggle" type="button" data-toggle="dropdown">
+                        <span class="[ glyphicon glyphicon-chevron-down ]"></span>
+                    </span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-google-plus-tags">
+                            <ul>
+                                <li><%= postitem.createdby %></li>
+                            </ul>
+                        </div>
+                        <div class="panel-heading">
+                            <img class="[ img-circle pull-left ]" src="https://lh3.googleusercontent.com/-CxXg7_7ylq4/AAAAAAAAAAI/AAAAAAAAAQ8/LhCIKQC5Aq4/s46-c-k-no/photo.jpg" alt="Mouse0270" />
+                            <h3><%=postitem.title%></h3>
+                            <h5><span>Shared publicly</span> - <span><%=postitem.createdat%></span> </h5>
+                        </div>
+                        <div class="panel-body">
+
+                            <h1><%=postitem.description%></h1>
+                            <% if(postitem.mediatype.toString().match("pdf")){%>
+                                <h3><a href="<%=postitem.mediaurl%>">Link</a></h3>
+                            <% }else if(postitem.mediatype.toString().match("mkv") || postitem.mediatype.toString().match("wav")|| postitem.mediatype.toString().match("mp4")|| postitem.mediatype.toString().match("avi")){%>
+                            <div id='media-player'>
+                                 <video id='media-video' controls>
+                                     <source src='<%= postitem.mediaurl %>' >
+                                 </video>
+                                <div id='media-controls'>
+                                    <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress>
+                                    <button id='replay-button' class='replay' title='replay' onclick='replayMedia();'><span class="glyphicon glyphicon-play"></span></button>
+                                    <button id='play-pause-button' class='play' title='play' onclick='togglePlayPause();'>Play</button>
+                                    <button id='stop-button' class='stop' title='stop' onclick='stopPlayer();'><span class="glyphicon glyphicon-stop"></span></button>
+                                    <button id='volume-inc-button' class='volume-plus' title='increase volume' onclick='changeVolume("+");'>+</button>
+                                    <button id='volume-dec-button' class='volume-minus' title='decrease volume' onclick='changeVolume("-");'>-</button>
+                                    <button id='mute-button' class='mute' title='mute' onclick='toggleMute("true");'>Mute</button>
+                                </div>
+                            </div>
+                            <%}else if(postitem.mediatype.toString().match("mp3")){%>
+                            <audio controls width="100" height="100">
+                                <source src="<%=postitem.mediaurl%>" type="audio/mp3">
+                            </audio>
+                            <%}else{%>
+                            <img src="<%=postitem.mediaurl%>">
+                            <%}%>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="button" class="[ btn btn-default ]" onclick="likepost()">+1</button>
+                            <button type="button" class="[ btn btn-default ]">
+                                <span class="[ glyphicon glyphicon-share-alt ]"></span>
+                            </button>
+                            <div id="<%=postitem.postid%>" class="input-placeholder" onclick="display(this.id)">Add a comment...</div>
+                        </div>
+                        <div id="c<%=postitem.postid%>" style="display: none">
+                            <div id="cl<%=postitem.postid%>">
+                                <% commentdata.forEach(function (commentitem) {%>
+                                <% if(commentitem.postid==postitem.postid) {%>
+                                <p><%=commentitem.commenttext%>-<%=commentitem.createdby%></p>
+                                <%}%>
+                                <%})%>
+                            </div>
+                            <img class="img-circle" src="https://lh3.googleusercontent.com/uFp_tsTJboUY7kue5XAsGA=s46" alt="User Image" />
+                            <div class="panel-google-plus-textarea">
+                                <textarea id="d<%=postitem.postid%>" rows="4"></textarea>
+                                <button type="submit" onclick="postcomment()">Post comment</button>
+                                <button type="reset" onclick="remove()">Cancel</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <%})%>
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/util/videoplayer.js"></script>
+<script src="/js/posts/postitem.js"></script>
+<script src="/js/posts/audioElement.js">
+
+</script>
 <% include ./partials/footer %>

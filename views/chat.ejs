@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Chat | ChatApp</title>
-    <link rel="stylesheet" href="/stylesheets/chat.css">
+    <title>Chat | ChatWindow</title>
+    <link rel="stylesheet" href="/stylesheets/util/chat.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 </head>
@@ -11,7 +11,7 @@
 <body class="chat">
 
 <div class="chat__sidebar">
-    <h3>People</h3>
+    <h3>Online:</h3>
     <div id="users">
 
     </div>
@@ -23,7 +23,6 @@
     <form id="message-form">
         <input type="text" name="message" placeholder="Message" autofocus autocomplete="off">
         <button>Send</button>
-
     </form>
     <button id="send-location">
         Send Location
@@ -45,7 +44,7 @@
 
 
 <script id="location-message-template" type="text/template">
-    <li class="message">
+    <li class="message">o
         <div class="message__title">
             <h4>{{from}}</h4>
             <span>{{createdAt}}</span>

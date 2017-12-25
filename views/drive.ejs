@@ -1,0 +1,73 @@
+<% include ./partials/header.ejs %>
+<link rel="stylesheet" href="/stylesheets/pages/drivepage.css">
+<link rel="stylesheet" href="/stylesheets/util/messageWindow.css">
+<link rel="stylesheet" href="/stylesheets/util/progressbar.css">
+
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content" >
+        <div class="modal-header">
+            <h2>Registering..............</h2>
+        </div>
+        <div class="modal-body">
+            <div id="myProgress">
+                <div id="myBar">0%</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <h3>Modal Footer</h3>
+        </div>
+    </div>
+</div>
+
+<div class="fixedColumn">
+    <div class="row">
+        <div class="col-lg-7">
+            <input  class="form-control" type="file" id="uploadfiles" value="Select File">
+        </div>
+        <div class="col-lg-5">
+            <button class="btn btn-primary" onclick="choosefolder()" style="display: inline">
+                <input type="hidden" id="email" value="<%=currentUser%>">
+                Choose Folder
+            </button>
+        </div>
+    </div>
+    <button class="btn btn-primary" onclick="back()" >Back</button>
+    <br>
+    <br>
+    <input type="text" class="input-lg form-control" id="foldername" name="foldername" placeholder="" class="input-xlarge">
+    <button class="btn btn-primary" onclick="createfolder()">Create folder</button>
+    <br>
+    <br>
+
+    <div class="folderlist" id="folderlist" style="display: none" >
+        <div class="list" id="list" style="overflow-y: scroll; height:300px;">
+        </div>
+        <button class="btn btn-primary" onclick="uploadFiles()" >Upload</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+
+        <div class="flexibleColumn">
+            <div id="box3">
+            </div>
+            <div id="loader" style="display: none">
+            </div>
+            <div id="box1" >
+
+            </div>
+            <div id="box2" style="display: none">
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/firebase/uploadfiles.js"></script>
+
+<% include ./partials/footer.ejs %>
