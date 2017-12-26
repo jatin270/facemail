@@ -168,19 +168,19 @@ app.get('/sendata',function (req,res) {
 
 
 //==================================================================================================================================
-
-var Pythonshell=require('python-shell')
-var options = {
-    mode: 'text',
-    pythonOptions: ['-u'],
-    args: ['value1', 'value2', 'value3']
-};
-
-Pythonshell.run('my_script.py', options, function (err, results) {
-    if (err) throw err;
-    // results is an array consisting of messages collected during execution
-    console.log('results: %j', results);
-});
+//
+// var Pythonshell=require('python-shell')
+// var options = {
+//     mode: 'text',
+//     pythonOptions: ['-u'],
+//     args: ['value1', 'value2', 'value3']
+// };
+//
+// Pythonshell.run('my_script.py', options, function (err, results) {
+//     if (err) throw err;
+//     // results is an array consisting of messages collected during execution
+//     console.log('results: %j', results);
+// });
 
 //===========================================Server================================================================
 

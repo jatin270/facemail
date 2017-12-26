@@ -10,7 +10,7 @@ $.post('/drive/foldername',{email},function (folders) {
     foldersgl=folders;
     for (var i=0; i<folders.length; i++)
     {
-        $('#box1').append('<div class="box col-lg-4">\n' +
+        $('#box1').append('<div class="box task col-lg-4">\n' +
             '                        <button onclick="display()">\n' +
             '                            <span class="glyphicon glyphicon-folder-open"></span>  '+  folders[i]+ '\n' +
             '                        </button>\n' +
@@ -156,8 +156,6 @@ $('#box1').click(function(event) {
     display(text.toString().trim())
 });
 
-
-
 function display(foldername) {
 
     document.getElementById("box1").style.display="none";
@@ -208,14 +206,14 @@ function display(foldername) {
                 if(type=="image")
                 {
                     $('#box2').append('\n' +
-                        '<div class="boximg col-lg-4">\n' +
+                        '<div class="boximg task col-lg-4">\n' +
                         '        <img src="' + data[i].link + '" alt="Fjords" width="300" height="200">\n' +
                         '    <div class="desc">' + data[i].filename + '</div>\n' +
                         '</div>');
                 }
                 else if(type =="audio"){
-                    $('#box2').append("<div class='box col-lg-4'>" +
-                        " <div id='media-player'>\n" +
+                    $('#box2').append("<div class='box task col-lg-4'>" +
+                        " <div class='task' id='media-player'>\n" +
                         "                                 <video id='media-video' controls>\n" +
                         "                                     <source src='"+ data[i].link+ "' >\n" +
                         "                                 </video>\n" +
@@ -225,7 +223,7 @@ function display(foldername) {
                 }
                 else if(type=="video"){
                     $('#box2').append("<div class='audioelement'>" +
-                        " <div id='media-player'>\n" +
+                        " <div class='task' id='media-player'>\n" +
                         "                                 <video id='media-video' width='320' height='240' controls>\n" +
                         "                                     <source src='"+ data[i].link+ "' >\n" +
                         "                                 </video>\n" +
@@ -246,4 +244,25 @@ function back() {
     document.getElementById("box1").style.display="block";
     document.getElementById("box2").style.display="none"
     document.getElementById("loader").style.display="none"
+}
+
+function sharelistdisplay() {
+    console.log("Hello")
+    document.getElementById('sharelist').style.display = "block";
+
+
+}
+
+var modal = document.getElementById('sharelist');
+
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+    modal.style.display = "none";
 }
