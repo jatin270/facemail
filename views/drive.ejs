@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/stylesheets/util/messageWindow.css">
 <link rel="stylesheet" href="/stylesheets/util/progressbar.css">
 <link rel="stylesheet" href="/stylesheets/util/context-menu.css">
-
+<link rel="stylesheet" href="/stylesheets/util/sharelist.css">
 <nav class="context-menu">
     <ul class="context-menu__items">
         <li class="context-menu__item">
@@ -116,17 +116,13 @@
 </div>
 
 
-<div id="sharelist" class="modal">
-    <div class="modal-header">
-        <span class="close">&times;</span>
-        <h2>Modal Header</h2>
+<div id="sharelist" class="modals">
+    <div class="modal-headers">
+        <span class="close" onclick="closelist()">&times;</span>
+        <h2>Share To...</h2>
+        <button class="btn btn-primary" onclick="send()">Send</button>
     </div>
-    <div class="modal-content" >
-       <ul>
-           <li>FaceBook</li>
-           <li>Youtube</li>
-           <li>Snapchat</li>
-       </ul>
+    <div style="overflow-y: scroll; height:300px;" id="datalist" class="modal-contents" >
     </div>
 </div>
 
@@ -134,5 +130,6 @@
 
 <script src="/js/firebase/uploadfiles.js"></script>
 <script src="/js/context_menu.js"></script>
+<script src="/js/share_functionality.js"></script>
 
 <% include ./partials/footer.ejs %>

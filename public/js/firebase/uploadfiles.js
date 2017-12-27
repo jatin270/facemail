@@ -1,10 +1,10 @@
 var file;
 var fileButton=document.getElementById('uploadfiles');
 
-
 var email=document.getElementById('email').value;
 
 var foldersgl;
+
 $.post('/drive/foldername',{email},function (folders) {
     console.log(folders);
     foldersgl=folders;
@@ -19,15 +19,11 @@ $.post('/drive/foldername',{email},function (folders) {
 });
 
 function createfolder() {
-
     var foldername=document.getElementById("foldername").value;
-
      $.post('/drive/createfolder',{foldername,email},function (data) {
          console.log(data+" folder created.");
          document.location.href = "/drive";
-
      });
-
 }
 
 fileButton.addEventListener('change',function (e) {
@@ -59,6 +55,7 @@ function choosefolder() {
 }
 
 var folderdestination="";
+
 $('#list').click(function(event) {
     var text = $(event.target).text().toString().trim();
     folderdestination=text;
@@ -145,7 +142,6 @@ function uploadFiles() {
         });
     });
 }
-
 
 $('#box1').click(function(event) {
 
@@ -240,29 +236,8 @@ function display(foldername) {
 function back() {
     $('#box2').empty();
     $('#box3').empty();
-
     document.getElementById("box1").style.display="block";
     document.getElementById("box2").style.display="none"
     document.getElementById("loader").style.display="none"
 }
 
-function sharelistdisplay() {
-    console.log("Hello")
-    document.getElementById('sharelist').style.display = "block";
-
-
-}
-
-var modal = document.getElementById('sharelist');
-
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-    modal.style.display = "none";
-}

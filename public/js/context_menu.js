@@ -133,7 +133,8 @@
         document.addEventListener( "click", function(e) {
             var clickeElIsLink = clickInsideElement( e, contextMenuLinkClassName );
 
-            console.log(e.srcElement.classList)
+
+            console.log(clickeElIsLink)
 
             if ( clickeElIsLink ) {
                 e.preventDefault();

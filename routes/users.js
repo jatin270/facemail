@@ -25,7 +25,6 @@ router.get('/chat',function (req,res) {
 });
 
 router.get('/:email', function(req, res, next) {
-
     var email=req.params.email;
     var followers=0;
     var following=0;
@@ -105,13 +104,11 @@ router.get('/:email', function(req, res, next) {
                 }else{
                     res.send('User not Found');
                 }
-
             })
             .catch(function (err) {
                 console.log(err);
             });
     }
-
 });
 
 router.post('/follow',function (req,res) {
@@ -144,6 +141,49 @@ router.post('/unfollow',function (req,res) {
 
 });
 
+router.post('/getalledges',function (req,res) {
+
+    email=req.session.email;
+    console.log(email);
+
+    var followersList=[];
+    var followingList=[];
+
+    session
+        .run('MATCH (a:User {email:{emailParam1}})<-[r:follow]-(b:User) RETURN b', {emailParam1: email})
+        .then(function (result) {
+            if (result.records) {
+                followers = result.records.length;
+                for(i=0;i<followers;i++){
+                    followersList.push(result.records[i]._fields[0].properties.email);
+                }
+            } else {
+                followers = 0;
+            }
+            console.log(followersList);
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+
+    session
+        .run('MATCH (a:User {email:{emailParam1}})-[r:follow]->(b:User) RETURN b', {emailParam1: email})
+        .then(function (result) {
+            if (result.records) {
+                following = result.records.length;
+                for(i=0;i<following;i++){
+                    followingList.push(result.records[i]._fields[0].properties.email);
+                }
+            } else {
+                following = 0;
+            }
+            console.log(followingList)
+            res.send({followersList,followingList});
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+});
 //===============================================================================================================================
 router.post('/search',function (req,res) {
 
