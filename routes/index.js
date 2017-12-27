@@ -28,7 +28,6 @@ var secretKey;
 
 //===================================================Routes=========================================================================
 
-
 router.get('/', function(req, res) {
   res.render("home");
 });
@@ -43,8 +42,6 @@ router.get('/register',function (req,res) {
 });
 
 router.post('/register',function (req,res) {
-
-    console.log(req.body);
 
      var username=req.body.username;
      var password=req.body.password;
@@ -108,12 +105,9 @@ router.post('/login',function (req,res) {
             const jwt=njwt.create(claims,secretKey);
             jwt.setExpiration(new Date().getTime()+(24*60*60*1000));
             const token=jwt.compact();
-            console.log(token);
             new Cookies(req,res).set('access_token',token,{
                 httpOnly:true
             });
-
-
             req.session.email=details.email;
             res.redirect('/home');
         })
@@ -146,7 +140,6 @@ router.get('/logout',function (req,res) {
     const jwt=njwt.create(claims,uuid.v4());
     jwt.setExpiration(new Date(0));
     const token=jwt.compact();
-    console.log(token);
     new Cookies(req,res).set('access_token',token,{
         httpOnly:true
     });

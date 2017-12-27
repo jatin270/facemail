@@ -99,6 +99,7 @@ io.on('connection',function (socket) {
 
     socket.on('join',function (params,callback) {
 
+        console.log(params);
         if(!isRealString(params.name)||!isRealString(params.room)){
             return callback("Name and room name required");
         }
@@ -147,7 +148,6 @@ io.on('connection',function (socket) {
         }
     });
     socket.on('disconnect',function () {
-
         var email=currentUser;
         var time=moment().format();
 

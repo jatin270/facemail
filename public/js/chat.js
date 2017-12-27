@@ -22,7 +22,6 @@ function scrollToBottom () {
 socket.on('connect',function () {
 
     var param=jQuery.deparam(window.location.search);
-
     var params={name:"",room:""};
     if(param.from.length>0 &&param.to.length>0) {
 
@@ -48,9 +47,6 @@ socket.on('connect',function () {
         });
 
 });
-
-
-
 
 socket.on('newMessage',function (message) {
 

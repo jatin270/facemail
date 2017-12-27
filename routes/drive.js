@@ -69,6 +69,7 @@ router.post('/createfolder',function (req,res) {
     res.send("Done");
 });
 
+
 router.post('/upload',function (req,res) {
     var filename=req.body.filename;
     var filetype=req.body.filetype;
@@ -98,5 +99,9 @@ router.post('/obtain',function (req,res) {
     });
 });
 
+router.post('/send',function (req,res) {
+
+
+})
 
 module.exports = router;

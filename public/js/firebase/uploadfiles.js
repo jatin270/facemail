@@ -198,17 +198,21 @@ function display(foldername) {
                 }else{
                     type="image";
                 }
+                tempdata={
+                    link:data[i].link,
+                    name:data[i].filename
+                }
 
                 if(type=="image")
                 {
-                    $('#box2').append('\n' +
-                        '<div class="boximg task col-lg-4">\n' +
+                    $('#box2').append('<div oncontextmenu="savelink(tempdata)" class="boximg task col-lg-4">\n' +
+                        '<p id="data">Hello World</p>'+
                         '        <img src="' + data[i].link + '" alt="Fjords" width="300" height="200">\n' +
                         '    <div class="desc">' + data[i].filename + '</div>\n' +
                         '</div>');
                 }
                 else if(type =="audio"){
-                    $('#box2').append("<div class='box task col-lg-4'>" +
+                    $('#box2').append("<div oncontextmenu='savelink(tempdata)' class='box task col-lg-4'>" +
                         " <div class='task' id='media-player'>\n" +
                         "                                 <video id='media-video' controls>\n" +
                         "                                     <source src='"+ data[i].link+ "' >\n" +
@@ -218,7 +222,7 @@ function display(foldername) {
                         "      </div>                 ");
                 }
                 else if(type=="video"){
-                    $('#box2').append("<div class='audioelement'>" +
+                    $('#box2').append("<div oncontextmenu='savelink(tempdata)' class='audioelement'>" +
                         " <div class='task' id='media-player'>\n" +
                         "                                 <video id='media-video' width='320' height='240' controls>\n" +
                         "                                     <source src='"+ data[i].link+ "' >\n" +
