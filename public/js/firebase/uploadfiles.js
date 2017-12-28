@@ -200,7 +200,8 @@ function display(foldername) {
                 }
                 tempdata={
                     link:data[i].link,
-                    name:data[i].filename
+                    name:data[i].filename,
+                    type:type
                 }
 
                 if(type=="image")

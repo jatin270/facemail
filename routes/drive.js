@@ -24,18 +24,16 @@ const uuidv4 = require('uuid/v4');
 const client = new Client({
     user: 'postgres',
     host: 'localhost',
-    database: 'posts',
+    database: 'datapost',
     password: 'aezakmisa',
     port: 5433,
 });
-
 client.connect();
 
 router.get('/',function (req,res) {
 
     const token=new Cookies(req,res).get('access_token');
     secretKey=res.app.get('secretKey');
-
 
     njwt.verify(token,secretKey,function (err,result) {
         if(err){
@@ -69,7 +67,6 @@ router.post('/createfolder',function (req,res) {
     res.send("Done");
 });
 
-
 router.post('/upload',function (req,res) {
     var filename=req.body.filename;
     var filetype=req.body.filetype;
@@ -98,10 +95,47 @@ router.post('/obtain',function (req,res) {
         res.send(drivedata);
     });
 });
+var temp=false;
+
+
 
 router.post('/send',function (req,res) {
 
+    console.log(req.body);
 
-})
+    var date=moment().format();
+    var from=req.body.from;
+    var link=req.body.link;
+    var filename=req.body.name;
+    var type=req.body.type;
+    var list=req.body.list;
+
+    console.log(list);
+
+    var to=list.replace('@','');
+    to=to.replace('.','');
+
+    var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
+        "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
+    client.query(command, (err, result) => {
+        console.log(to);
+        console.log(err);
+        if (err) {
+            var sql = "CREATE TABLE " + to + " (ID SERIAL PRIMARY KEY NOT NULL,TITLE VARCHAR(250) NOT NULL,MEDIAURL VARCHAR(250),MEDIATYPE CHAR(50),SENDBY CHAR(50),CREATEDAT TIMESTAMPTZ)";
+                    client.query(sql, (err, result) => {
+                        var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
+                            "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
+                        client.query(command, function (err, result) {
+                            res.send("Done");
+                        });
+                    });
+                }
+
+            });
+
+});
+
+
+
 
 module.exports = router;

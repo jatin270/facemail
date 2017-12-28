@@ -10,6 +10,19 @@ var Cookies=require('cookies'),
 
 var secretKey;
 
+
+const { Pool, Client } = require('pg');
+const moment=require('moment');
+const uuidv4 = require('uuid/v4');
+const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'datapost',
+    password: 'aezakmisa',
+    port: 5433,
+});
+client.connect();
+
 //=============================================Following functinality and Display User===============================================================
 
 router.get('/chat',function (req,res) {
@@ -184,6 +197,24 @@ router.post('/getalledges',function (req,res) {
             console.log(err);
         });
 });
+
+router.post('/receivefiles',function (req,res) {
+    cuser=req.session.email;
+    cuser=cuser.replace('@','');
+    cuser=cuser.replace('.','');
+    console.log(cuser);
+
+    client.query('SELECT * FROM '+cuser, (err, result) => {
+        if(err){
+            res.send(false)
+        }
+        else{
+            data=result.rows;
+            res.send(data);
+        }
+    });
+});
+
 //===============================================================================================================================
 router.post('/search',function (req,res) {
 

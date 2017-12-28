@@ -19,10 +19,6 @@ const client = new Client({
     password: 'aezakmisa',
     port: 5433,
 });
-
-
-
-
 client.connect();
 
 

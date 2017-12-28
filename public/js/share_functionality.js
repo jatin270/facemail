@@ -58,36 +58,22 @@ function addtolist(id) {
 
 
 function send() {
-    console.log(sharelist);
-    console.log(sharedata);
+
+    console.log("Check");
     var from=document.getElementById('email').value;
-    console.log(from)
+    data={
+        list:sharelist[0],
+        link:sharedata.link,
+        name:sharedata.name,
+        type:sharedata.type,
+        from:from
+    }
 
-
-
-    for (var i = 0; i < sharelist.length; i++) {
-        param = {
-                from: from,
-                to: sharelist[i]
-
-        }
-
-        var params = {name: "", room: ""};
-
-        if (param.from.length > 0 && param.to.length > 0) {
-                params.name = param.from;
-                if (param.from < param.to)
-                    params.room = param.from + param.to;
-                else
-                    params.room = param.to + param.from;
-            }
-            params.room = params.room.replace('@', '');
-            params.room = params.room.replace('@', '');
-            params.room = params.room.replace('.', '');
-            params.room = params.room.replace('.', '');
-            $.post('/drive/send',{sharedata,params},function (data) {
-
-            });
-        }
+    $.post('/drive/send',data,function (data) {
+            console.log("Successfully Sent to "+data);
+            sharelist=[];
+            sharedata="";
+            modal.style.display="none"
+    });
 
 }

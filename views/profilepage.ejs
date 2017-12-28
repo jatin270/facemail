@@ -82,6 +82,19 @@
         <input type="hidden" name="to" value="<%=userdetail.email%>">
         <input type="submit" value="Message" class="btn btn-primary btn-md">
     </form>
+        <br>
+        <br>
+        <br>
+        <% if (currentUser==userdetail.email){%>
+        <div class="filebox">
+            <div class="filebox-header">
+                <h1 style="display: inline">File</h1>
+                <button class="btn btn-primary" style="float:right" onclick="">Refresh</button>
+            </div>
+            <div id="datalist" class="filebox-content">
+            </div>
+        </div>
+        <%}%>
 </div>
 </div>
 </div>

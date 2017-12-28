@@ -44,3 +44,15 @@ jQuery('#unfollowrequest').on('submit',function (e) {
         document.location.href = '/users/' + val;
     });
 });
+$.post("/users/receivefiles",{},function (data) {
+    console.log(data);
+    if(data.length>0) {
+        for (var i = 0; i < data.length; i++) {
+            $('#datalist').append("<div><h class='filename'> "+data[i].title+"</h></p>" +
+                "<button style='float: right'>View</button>" +
+                "</div>")
+        }
+    }else{
+        $('#datalist').append("<div>No new data</div>")
+    }
+});
