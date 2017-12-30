@@ -187,8 +187,6 @@ function display(foldername) {
                 var extension = data[i].filename.split('.').pop().toLowerCase();
                 var filextension=extension;
 
-                console.log(filextension);
-
                 if(filextension.match("docx")||filextension.match("pdf")){
                     type="documents";
                 }else if(filextension.match("mp3")){

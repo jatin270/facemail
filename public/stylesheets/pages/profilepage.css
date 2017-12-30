@@ -108,3 +108,28 @@
     padding-left:3px;
     padding-bottom:10px;
 }
+
+.box {
+    background-color: whitesmoke;
+    color: black;
+    border-radius: 50px;
+    padding: 20px;
+    border: 10px;
+    font-size: 150%;
+}
+
+.boximg {
+    width: 320px;
+    padding: 10px;
+    border: 10px;
+    z-index: 1000;
+    align-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 25px;
+}
+
+.boximg .desc {
+    text-align: center;
+    padding: 10px 20px;
+}

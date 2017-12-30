@@ -33,7 +33,6 @@ router.get('/', function(req, res) {
 });
 
 router.get('/home',function (req,res) {
-
     res.render('home');
 });
 
@@ -145,6 +144,10 @@ router.get('/logout',function (req,res) {
     });
     req.session.destroy();
     res.redirect('/home');
+});
+
+router.get('/viewer',function (req,res) {
+    res.render('view');
 });
 
 module.exports = router;
