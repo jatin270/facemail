@@ -1,13 +1,18 @@
 var file;
+
 var fileButton=document.getElementById('uploadfiles');
 
 var email=document.getElementById('email').value;
 
 var foldersgl;
 
+document.getElementById("loader").style.display="block";
+
 $.post('/drive/foldername',{email},function (folders) {
-    console.log(folders);
-    foldersgl=folders;
+    document.getElementById("loader").style.display="none";
+    if(folders.length==0){
+        $('#loader').append('<div>No folder created.</div>')
+    }
     for (var i=0; i<folders.length; i++)
     {
         $('#box1').append('<div class="box task col-lg-4">\n' +
@@ -171,10 +176,12 @@ function display(foldername) {
 
     console.log(userinfo);
 
-    $.post('/drive/obtain',userinfo,function (data) {
+    $.post('/drive/obtain',userinfo,function (rawdata) {
 
+        keys=rawdata.drivekeys;
+        data=rawdata.drivedata;
 
-        $("#box3").append("<h1>Content:</h1>");
+        $("#box2").append("<h1>Content:</h1>");
         document.getElementById("loader").style.display="none";
 
         if(data.length==0)
@@ -198,14 +205,16 @@ function display(foldername) {
                 }
                 tempdata={
                     link:data[i].link,
+                    username:email,
+                    folder:foldername,
                     name:data[i].filename,
+                    documentname:keys[i],
                     type:type
                 }
 
                 if(type=="image")
                 {
                     $('#box2').append('<div oncontextmenu="savelink(tempdata)" class="boximg task col-lg-4">\n' +
-                        '<p id="data">Hello World</p>'+
                         '        <img src="' + data[i].link + '" alt="Fjords" width="300" height="200">\n' +
                         '    <div class="desc">' + data[i].filename + '</div>\n' +
                         '</div>');
@@ -243,4 +252,5 @@ function back() {
     document.getElementById("box2").style.display="none"
     document.getElementById("loader").style.display="none"
 }
+
 

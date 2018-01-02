@@ -28,8 +28,6 @@ function sharelistdisplay() {
 
 var modal = document.getElementById('sharelist');
 
-
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
 
     if (event.target == modal) {
@@ -43,7 +41,6 @@ function closelist() {
     modal.style.display = "none";
 }
 
-
 function addtolist(id) {
     if(sharelist.indexOf(id)!=-1) {
         i=sharelist.indexOf(id)
@@ -56,10 +53,8 @@ function addtolist(id) {
     }
 }
 
-
 function send() {
 
-    console.log("Check");
     var from=document.getElementById('email').value;
     data={
         list:sharelist[0],
@@ -75,5 +70,18 @@ function send() {
             sharedata="";
             modal.style.display="none"
     });
+
+}
+
+function deleteitem() {
+    console.log(sharedata);
+
+    $.post('/drive/delete',sharedata,function (result) {
+
+        $("#box2").empty();
+        display(sharedata.folder);
+    });
+
+
 
 }

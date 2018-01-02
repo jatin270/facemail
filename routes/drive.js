@@ -85,14 +85,14 @@ router.post('/obtain',function (req,res) {
     var email=req.body.email;
     var foldername=req.body.name;
     var docRef = db.collection("Drive_Data").doc(email).collection(foldername);
-    console.log(docRef);
     drivedata=[];
+    drivekeys=[];
     docRef.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
+            drivekeys.push(doc.id);
             drivedata.push(doc.data());
         });
-        console.log("Check"+drivedata);
-        res.send(drivedata);
+        res.send({drivedata,drivekeys});
     });
 });
 var temp=false;
@@ -135,6 +135,15 @@ router.post('/send',function (req,res) {
 
 });
 
+router.post('/delete',function (req,res) {
+
+    data=req.body;
+
+    var deleteDoc = db.collection("Drive_Data").doc(data.username).collection(data.folder).doc(data.documentname).delete();
+
+    res.send("Done");
+
+});
 
 
 
