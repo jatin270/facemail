@@ -210,10 +210,7 @@ function display(foldername) {
                     documentname:keys[i],
                     type:type
                 }
-
                 folderdata.push(tempdata);
-
-
                 if(type=="image")
                 {
                     $('#box2').append('<div id="'+ keys[i]+'" oncontextmenu="savelink(this.id)" class="boximg task col-lg-4">\n' +

@@ -21,6 +21,15 @@ const client = new Client({
 });
 client.connect();
 
+const client2=new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'datapost',
+    password: 'aezakmisa',
+    port: 5433,
+});
+
+client2.connect();
 
 
 router.get('/',function (req,res) {
@@ -149,6 +158,41 @@ router.post('/createcomment',function (req,res) {
     });
 
 
+});
+
+router.post('/send',function (req,res) {
+
+
+    console.log(req.body);
+
+    link=req.body.key;
+    filename=req.body.name;
+    to=req.body.to;
+    to=to.replace('@','');
+    to=to.replace('.','');
+    type="post"
+    from=req.session.email;
+    var date=moment().format();
+
+
+    var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
+        "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
+    client2.query(command, (err, result) => {
+        if (err) {
+            var sql = "CREATE TABLE " + to + " (ID SERIAL PRIMARY KEY NOT NULL,TITLE VARCHAR(250) NOT NULL,MEDIAURL VARCHAR(250),MEDIATYPE CHAR(50),SENDBY CHAR(50),CREATEDAT TIMESTAMPTZ)";
+            client2.query(sql, (err, result) => {
+                console.log("---------------------------------------------",to);
+                console.log(err,result);
+                var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
+                    "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
+                client2.query(command, function (err, result) {
+                    console.log("-----------------------------------------");
+                    console.log(err,result);
+                    res.send("Done")
+                });
+            });
+        }
+    });
 });
 
 module.exports = router;

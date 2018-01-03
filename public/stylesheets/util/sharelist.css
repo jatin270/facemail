@@ -61,7 +61,12 @@
 
 .listitem{
     background: #fffffa;
-    padding: auto;
     margin: auto;
     size: auto;
+    color: black;
+    border-radius: 50px;
+    padding: 20px;
+    border: 10px;
+    font-size: 150%;
+
 }

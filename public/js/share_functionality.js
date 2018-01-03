@@ -3,19 +3,6 @@ var sharelist=[];
 var itemlist=[];
 
 
-function savelink(key) {
-
-    console.log("-------------------------");
-    for(var i=0;i<folderdata.length;i++){
-        if(folderdata[i].documentname==key){
-            sharedata=folderdata[i];
-            break;
-        }
-    }
-
-    console.log(sharedata);
-}
-
 function sharelistdisplay() {
     document.getElementById('sharelist').style.display = "block";
     $.post('/users/getalledges',{},function (data) {
@@ -37,6 +24,19 @@ function sharelistdisplay() {
     });
 }
 
+function savelink(key) {
+
+    console.log("-------------------------");
+    for(var i=0;i<folderdata.length;i++){
+        if(folderdata[i].documentname==key){
+            sharedata=folderdata[i];
+            break;
+        }
+    }
+
+    console.log(sharedata);
+}
+
 var modal = document.getElementById('sharelist');
 
 window.onclick = function(event) {
@@ -55,7 +55,7 @@ function closelist() {
 function addtolist(id) {
     if(sharelist.indexOf(id)!=-1) {
         i=sharelist.indexOf(id)
-        sharelist.splice(id,1);
+        sharelist.splice(i,1);
         document.getElementById(id).style.background = "#fffffa";
     }
     else {
@@ -65,25 +65,37 @@ function addtolist(id) {
 }
 
 function send() {
-
     // send multiple item and send to multiple left
+    // var from=document.getElementById('email').value;
 
-    var from=document.getElementById('email').value;
-    data={
-        list:sharelist[0],
-        link:sharedata.link,
-        name:sharedata.name,
-        type:sharedata.type,
-        from:from
+
+    for (var i = 0; i < sharelist.length; i++) {
+        data = {
+            to: sharelist[i],
+            link: sharedata.link,
+            name: sharedata.name,
+            type: sharedata.type,
+        }
+
+        console.log("----------------------");
+        $.ajax({
+            type: 'POST',
+            url: '/drive/send',
+            data: data,
+            success: success,
+            async: false
+        });
+
+        function success() {
+            console.log("Successfully Sent ");
+        }
     }
 
-    $.post('/drive/send',data,function (data) {
-            console.log("Successfully Sent to "+data);
-            sharelist=[];
-            sharedata="";
-            modal.style.display="none"
-    });
 
+    console.log("Finished----------------------");
+    sharelist = [];
+    sharedata = "";
+    modal.style.display = "none"
 }
 
 function deleteitem() {

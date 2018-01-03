@@ -1,6 +1,7 @@
 <% include ./partials/header %>
 <link rel="stylesheet" href="/stylesheets/posts/postitem.css">
 <link rel="stylesheet" href="/stylesheets/util/player.css">
+<link rel="stylesheet" href="/stylesheets/util/sharelist.css">
 
 <div class="container">
     <div class="row">
@@ -65,8 +66,9 @@
                         </div>
                         <div class="panel-footer">
                             <button type="button" class="[ btn btn-default ]" onclick="likepost()">+1</button>
-                            <button type="button" class="[ btn btn-default ]">
+                            <button id="<%=postitem.postid%>" type="button" onclick="send_list(this.id,'<%=postitem.title%>')" class="[ btn btn-default ]">
                                 <span class="[ glyphicon glyphicon-share-alt ]"></span>
+                                Send
                             </button>
                             <div id="<%=postitem.postid%>" class="input-placeholder" onclick="display(this.id)">Add a comment...</div>
                         </div>
@@ -95,8 +97,19 @@
     </div>
 </div>
 
+<div id="sharelist" class="modals">
+    <div class="modal-headers">
+        <span class="close" onclick="closelist()">&times;</span>
+        <h2>Share To...</h2>
+        <button class="btn btn-primary" onclick="send()">Send</button>
+    </div>
+    <div style="overflow-y: scroll; height:300px;" id="datalist" class="modal-contents" >
+    </div>
+</div>
+
 <script src="/js/util/videoplayer.js"></script>
 <script src="/js/posts/postitem.js"></script>
+<script src="/js/posts/post_share.js"></script>
 <script src="/js/posts/audioElement.js">
 
 </script>

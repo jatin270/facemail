@@ -103,35 +103,32 @@ router.post('/send',function (req,res) {
     console.log(req.body);
 
     var date=moment().format();
-    var from=req.body.from;
+    var from=req.session.email;
     var link=req.body.link;
     var filename=req.body.name;
     var type=req.body.type;
-    var list=req.body.list;
-
-    console.log(list);
-
-    var to=list.replace('@','');
+    var to=req.body.to;
+    to=to.replace('@','');
     to=to.replace('.','');
+
 
     var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
         "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
     client.query(command, (err, result) => {
-        console.log(to);
-        console.log(err);
+        console.log(err,result);
         if (err) {
             var sql = "CREATE TABLE " + to + " (ID SERIAL PRIMARY KEY NOT NULL,TITLE VARCHAR(250) NOT NULL,MEDIAURL VARCHAR(250),MEDIATYPE CHAR(50),SENDBY CHAR(50),CREATEDAT TIMESTAMPTZ)";
-                    client.query(sql, (err, result) => {
-                        var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
-                            "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
-                        client.query(command, function (err, result) {
-                            res.send("Done");
-                        });
-                    });
-                }
-
+            client.query(sql, (err, result) => {
+                console.log(err,result);
+                var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
+                    "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
+                client.query(command, function (err, result) {
+                    console.log(err,result);
+                    res.send("Done");
+                });
             });
-
+        }
+    });
 });
 
 router.post('/delete',function (req,res) {
