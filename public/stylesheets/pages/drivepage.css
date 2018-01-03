@@ -35,6 +35,10 @@
     border: 10px;
     font-size: 150%;
 }
+.item{
+    padding: 10px 20px;
+
+}
 
 .folderlist{
     padding: auto;

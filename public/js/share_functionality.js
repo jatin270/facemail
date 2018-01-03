@@ -1,8 +1,19 @@
 var sharedata;
 var sharelist=[];
+var itemlist=[];
 
-function savelink(data) {
-    sharedata=data;
+
+function savelink(key) {
+
+    console.log("-------------------------");
+    for(var i=0;i<folderdata.length;i++){
+        if(folderdata[i].documentname==key){
+            sharedata=folderdata[i];
+            break;
+        }
+    }
+
+    console.log(sharedata);
 }
 
 function sharelistdisplay() {
@@ -55,6 +66,8 @@ function addtolist(id) {
 
 function send() {
 
+    // send multiple item and send to multiple left
+
     var from=document.getElementById('email').value;
     data={
         list:sharelist[0],
@@ -81,7 +94,9 @@ function deleteitem() {
         $("#box2").empty();
         display(sharedata.folder);
     });
+}
 
-
-
+function additemtolist() {
+    itemlist.push(sharedata);
+    $("#selected-item-list").append("<div class='item'>"+sharedata.name+"</div>");
 }

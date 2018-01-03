@@ -95,9 +95,8 @@ router.post('/obtain',function (req,res) {
         res.send({drivedata,drivekeys});
     });
 });
+
 var temp=false;
-
-
 
 router.post('/send',function (req,res) {
 
@@ -136,15 +135,9 @@ router.post('/send',function (req,res) {
 });
 
 router.post('/delete',function (req,res) {
-
     data=req.body;
-
     var deleteDoc = db.collection("Drive_Data").doc(data.username).collection(data.folder).doc(data.documentname).delete();
-
     res.send("Done");
-
 });
-
-
 
 module.exports = router;

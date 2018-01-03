@@ -1,9 +1,8 @@
 var file;
-
 var fileButton=document.getElementById('uploadfiles');
 
 var email=document.getElementById('email').value;
-
+var folderdata=[];
 var foldersgl;
 
 document.getElementById("loader").style.display="block";
@@ -176,6 +175,7 @@ function display(foldername) {
 
     console.log(userinfo);
 
+
     $.post('/drive/obtain',userinfo,function (rawdata) {
 
         keys=rawdata.drivekeys;
@@ -188,7 +188,6 @@ function display(foldername) {
         {
             $("#box2").append("<h2>Empty folder</h2>");
         }
-
         for (var i = 0; i < data.length; i++) {
                 var type;
                 var extension = data[i].filename.split('.').pop().toLowerCase();
@@ -212,15 +211,19 @@ function display(foldername) {
                     type:type
                 }
 
+                folderdata.push(tempdata);
+
+
                 if(type=="image")
                 {
-                    $('#box2').append('<div oncontextmenu="savelink(tempdata)" class="boximg task col-lg-4">\n' +
+                    $('#box2').append('<div id="'+ keys[i]+'" oncontextmenu="savelink(this.id)" class="boximg task col-lg-4">\n' +
                         '        <img src="' + data[i].link + '" alt="Fjords" width="300" height="200">\n' +
                         '    <div class="desc">' + data[i].filename + '</div>\n' +
                         '</div>');
                 }
                 else if(type =="audio"){
-                    $('#box2').append("<div oncontextmenu='savelink(tempdata)' class='box task col-lg-4'>" +
+
+                    $('#box2').append("<div id='"+keys[i]+"' oncontextmenu='savelink(this.id)' class='box task col-lg-4'>" +
                         " <div class='task' id='media-player'>\n" +
                         "                                 <video id='media-video' controls>\n" +
                         "                                     <source src='"+ data[i].link+ "' >\n" +
@@ -230,7 +233,7 @@ function display(foldername) {
                         "      </div>                 ");
                 }
                 else if(type=="video"){
-                    $('#box2').append("<div oncontextmenu='savelink(tempdata)' class='audioelement'>" +
+                    $('#box2').append("<div  id='"+keys[i]+"' oncontextmenu='savelink(this.id)' class='audioelement'>" +
                         " <div class='task' id='media-player'>\n" +
                         "                                 <video id='media-video' width='320' height='240' controls>\n" +
                         "                                     <source src='"+ data[i].link+ "' >\n" +
@@ -240,7 +243,6 @@ function display(foldername) {
                         "      </div>                 ");
                 }
             }
-
 
     });
 }

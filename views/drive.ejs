@@ -22,7 +22,7 @@
             </a>
         </li>
         <li class="context-menu__item" >
-            <a href="" class="context-menu__link">
+            <a href="#" onclick="additemtolist()" class="context-menu__link">
                 <i class="fa fa-times"></i>Add to list
             </a>
         </li>
@@ -69,6 +69,11 @@
     <br>
     <br>
 
+    <div id="selected-item-list">
+    </div>
+    <button class="btn btn-primary" onclick="send()">Send</button>
+    <br>
+    <br>
     <div class="folderlist" id="folderlist" style="display: none" >
         <div class="list" id="list" style="overflow-y: scroll; height:300px;">
         </div>
