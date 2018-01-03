@@ -100,33 +100,43 @@ var temp=false;
 
 router.post('/send',function (req,res) {
 
-    console.log(req.body);
+    val=req.body;
 
-    var date=moment().format();
-    var from=req.session.email;
-    var link=req.body.link;
-    var filename=req.body.name;
-    var type=req.body.type;
-    var to=req.body.to;
-    to=to.replace('@','');
-    to=to.replace('.','');
+    console.log(typeof val.list);
+    data=JSON.parse(val.list);
+    var to = data[0].to;
+    to = to.replace('@', '');
+    to = to.replace('.', '');
+    var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n VALUES";
+    for(var i=0;i<data.length;i++) {
+        var date = moment().format();
+        var from = req.session.email;
+        var link = data[i].link;
+        var filename = data[i].name;
+        var type = data[i].type;
 
+        temp="( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "'),";
+        command=command+temp;
+    }
 
-    var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
-        "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
+    command=command.slice(0,-1);
+
     client.query(command, (err, result) => {
         console.log(err,result);
         if (err) {
             var sql = "CREATE TABLE " + to + " (ID SERIAL PRIMARY KEY NOT NULL,TITLE VARCHAR(250) NOT NULL,MEDIAURL VARCHAR(250),MEDIATYPE CHAR(50),SENDBY CHAR(50),CREATEDAT TIMESTAMPTZ)";
             client.query(sql, (err, result) => {
                 console.log(err,result);
-                var command = "INSERT INTO " + to + " (TITLE,MEDIAURL,MEDIATYPE,SENDBY,CREATEDAT)\n" +
-                    "VALUES ( '" + filename + "' ,'" + link + "','" + type + "','" + from + "','" + date + "');\n";
+
                 client.query(command, function (err, result) {
                     console.log(err,result);
+                    console.log("Done");
                     res.send("Done");
                 });
             });
+        }
+        else{
+            res.send("Done");
         }
     });
 });

@@ -3,7 +3,7 @@ var fileButton=document.getElementById('uploadfiles');
 
 var email=document.getElementById('email').value;
 var folderdata=[];
-var foldersgl;
+var foldersgl=[];
 
 document.getElementById("loader").style.display="block";
 
@@ -12,6 +12,7 @@ $.post('/drive/foldername',{email},function (folders) {
     if(folders.length==0){
         $('#loader').append('<div>No folder created.</div>')
     }
+    foldersgl=folders;
     for (var i=0; i<folders.length; i++)
     {
         $('#box1').append('<div class="box task col-lg-4">\n' +

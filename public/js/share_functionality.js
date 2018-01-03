@@ -2,9 +2,13 @@ var sharedata;
 var sharelist=[];
 var itemlist=[];
 
-
 function sharelistdisplay() {
+    if(sharedata.length!=0){
+        itemlist.push(sharedata);
+    }
+    $("#selected-item-list").empty();
     document.getElementById('sharelist').style.display = "block";
+
     $.post('/users/getalledges',{},function (data) {
         followinglist=data['followingList'];
         followerslist=data['followersList'];
@@ -26,15 +30,12 @@ function sharelistdisplay() {
 
 function savelink(key) {
 
-    console.log("-------------------------");
     for(var i=0;i<folderdata.length;i++){
         if(folderdata[i].documentname==key){
             sharedata=folderdata[i];
             break;
         }
     }
-
-    console.log(sharedata);
 }
 
 var modal = document.getElementById('sharelist');
@@ -53,6 +54,7 @@ function closelist() {
 }
 
 function addtolist(id) {
+
     if(sharelist.indexOf(id)!=-1) {
         i=sharelist.indexOf(id)
         sharelist.splice(i,1);
@@ -65,44 +67,42 @@ function addtolist(id) {
 }
 
 function send() {
-    // send multiple item and send to multiple left
-    // var from=document.getElementById('email').value;
-
+    console.log(sharedata);
+    console.log(itemlist);
 
     for (var i = 0; i < sharelist.length; i++) {
-        data = {
-            to: sharelist[i],
-            link: sharedata.link,
-            name: sharedata.name,
-            type: sharedata.type,
+
+
+        for(var j=0;j<itemlist.length;j++){
+            itemlist[j].to=sharelist[i];
         }
 
-        console.log("----------------------");
         $.ajax({
             type: 'POST',
             url: '/drive/send',
-            data: data,
+            data: {list:JSON.stringify(itemlist)},
+            dataType:"json",
+            beforeSend: function(x) {
+                if (x && x.overrideMimeType) {
+                    x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+            },
             success: success,
             async: false
         });
-
         function success() {
-            console.log("Successfully Sent ");
+            console.log("Done ");
         }
     }
-
-
-    console.log("Finished----------------------");
     sharelist = [];
     sharedata = "";
+    itemlist=[]
     modal.style.display = "none"
 }
 
 function deleteitem() {
     console.log(sharedata);
-
     $.post('/drive/delete',sharedata,function (result) {
-
         $("#box2").empty();
         display(sharedata.folder);
     });
@@ -111,4 +111,5 @@ function deleteitem() {
 function additemtolist() {
     itemlist.push(sharedata);
     $("#selected-item-list").append("<div class='item'>"+sharedata.name+"</div>");
+    sharedata="";
 }
