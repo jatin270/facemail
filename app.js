@@ -96,7 +96,6 @@ session
 //===============================Socket.io for messagin==================================================================
 
 io.on('connection',function (socket) {
-
     socket.on('join',function (params,callback) {
 
         console.log(params);
@@ -140,7 +139,6 @@ io.on('connection',function (socket) {
             callback();
         }
     });
-
     socket.on('createLocationMessage',function (coords) {
         var user=usersonline.getUser(socket.id);
         if(user){
@@ -158,7 +156,6 @@ io.on('connection',function (socket) {
         }
     });
 });
-
 
 //=================================================Routes=============================================================================================
 

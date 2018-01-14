@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/stylesheets/util/style.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="/js/autocomplete.js"></script>
+    <script src="/js/mainpage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
 
     <script>
@@ -37,7 +38,19 @@
             <li class="active"><a href="/newsfeed">Newsfeed</a></li>
             <li><a href="#">Mail</a></li>
             <li><a href="/drive">Drive</a></li>
-            <li><a href="#">Notification</a></li>
+            <li id="noti_Container">
+                <br>
+                   <!--SHOW NOTIFICATIONS COUNT.-->
+                <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN.-->
+                <div id="noti_Button"></div>
+                <div id="noti_Counter"></div>
+                <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+                <div id="notifications">
+                    <h3>Notifications</h3>
+                    <div style="height:300px;"></div>
+                    <div class="seeAll"><a href="#">See All</a></div>
+                </div>
+            </li>
         </ul>
 
         <div class="collapse navbar-collapse">
